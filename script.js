@@ -1,40 +1,60 @@
+let counter = -1;
+let hasShot = false;
+
 let ballArea = document.querySelector(".ball-area");
-ballArea.addEventListener("mousedown", createBall);
-ballArea.addEventListener("mouseup", shootBall)
+ballArea.addEventListener("mousedown", createball);
+ballArea.addEventListener("mouseup", shootball)
 
-const ball = document.querySelector(".ball");
-const b = {x:0, y:0, w:40, h:40, velX: 0, velY: 0}
-ball.style.width = `${b.w}px`;
-ball.style.height =`${b.h}px`;
-ball.style.left = `${b.x}px`;
-ball.style.top = `${b.y}px`;
-
-
-function createBall(event){
-    b.x = event.clientX;
-    b.y = event.clientY;
-    b.velX = 0;
-    b.velY = 0;
-    ball.style.left = `${b.x-(b.w/2)}px`;
-    ball.style.top = `${b.y-(b.h/2)}px`;
+let bs = []
+for(let i = 0; i<10; i++){
+    bs[i] = {x:0, y:0, w:40, h:40, velX: 0, velY: 0};
 }
 
-function shootBall(event){
-    b.velX = ((b.x - event.clientX)/100);
-    b.velY = ((b.y - event.clientY)/100); 
-    console.log("X Velocity: " + b.velX);
-    console.log("Y Velocity: " + b.velY);
-    let interval = setInterval(function(){
-        if(b.x - b.w/2 <= 0 || b.x + b.w/2 >= window.innerWidth){
-            b.velX *= -1;
-        }
-        if(b.y - b.h/2 <= window.innerHeight - ballArea.offsetHeight
-         || b.y + b.h/2 >= window.innerHeight){
-            b.velY *= -1;
-        }
-        b.x = b.x + b.velX;
-        b.y = b.y + b.velY;
-        ball.style.left = `${Math.round(b.x-(b.w/2))}px`;
-        ball.style.top = `${Math.round(b.y-(b.h/2))}px`;
-    }, 10);
+
+const balls = [];
+for(let i = 0; i<10; i++){
+    const ball = document.createElement("div")
+    ball.className = "ball";
+    balls[i] = ball;
+    ballArea.appendChild(balls[i]);
 }
+
+
+
+function createball(event){
+    counter++;
+    hasShot = false;
+    bs[counter].x = event.clientX;
+    bs[counter].y = event.clientY;
+    bs[counter].velX = 0;
+    bs[counter].velY = 0;
+    balls[counter].style.width = `${bs[counter].w}px`;
+    balls[counter].style.height =`${bs[counter].h}px`;
+    balls[counter].style.left = `${bs[counter].x-(bs[counter].w/2)}px`;
+    balls[counter].style.top = `${bs[counter].y-(bs[counter].h/2)}px`;
+}
+
+function shootball(event){
+    hasShot = true;
+    bs[counter].velX = ((bs[counter].x - event.clientX)/50);
+    bs[counter].velY = ((bs[counter].y - event.clientY)/50); 
+}
+
+let interval = setInterval(function(){
+    for(let i = 0; i<counter; i++){
+        if(hasShot){
+            bs[i].velY += .05;
+        }
+        if(bs[i].x - bs[i].w/2 <= 0 || bs[i].x + bs[i].w/2 >= window.innerWidth){
+            bs[i].velX *= -1;
+        }
+        if(bs[i].y - bs[i].h/2 <= window.innerHeight - ballArea.offsetHeight
+        || bs[i].y + bs[i].h/2 >= window.innerHeight){
+            bs[i].velY *= -1;
+        }
+        bs[i].x = bs[i].x + bs[i].velX;
+        bs[i].y = bs[i].y + bs[i].velY;
+        balls[i].style.left = `${Math.round(bs[i].x-(bs[i].w/2))}px`;
+        balls[i].style.top = `${Math.round(bs[i].y-(bs[i].h/2))}px`;
+}
+}, 5);

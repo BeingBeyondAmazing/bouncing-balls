@@ -11,7 +11,7 @@ body {
 .above-text {
     height: 10vh;
     width: 100vw;
-    background-color: darkgray;
+    background-color: black;
     color:whitesmoke;
     border-color: black;
     font-size: 8.5vh;
@@ -20,11 +20,11 @@ body {
 .ball-area {
     height: 90vh;
     width: 100vw;
-    background-color: gray;
+    background-color: whitesmoke;
 }
 
 .ball {
-    background-color : darkgray;
+    background-color : black;
     border-radius : 50%;
     position: absolute;
 }
