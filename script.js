@@ -69,13 +69,16 @@ let interval = setInterval(function(){
             bs[i].velY += .05;
         }
         if(bs[i].x - bs[i].w/2 <= 0 || bs[i].x + bs[i].w/2 >= window.innerWidth){
-            bs[i].velX *= -1;
+            bs[i].velX *= -.9;
         }
         if(bs[i].y - bs[i].h/2 <= window.innerHeight - ballArea.offsetHeight
         || bs[i].y + bs[i].h/2 >= window.innerHeight){
-            bs[i].velY *= -1;
+            bs[i].velY *= -.9;
             if(bs[i].y - bs[i].h/2<= window.innerHeight - ballArea.offsetHeight){
                 bs[i].y = window.innerHeight - ballArea.offsetHeight + bs[i].h/2;
+            }
+            if(bs[i].y + bs[i].h/2 >= window.innerHeight){
+                bs[i].y = window.innerHeight - bs[i].h/2;
             }
         }
         bs[i].x = bs[i].x + bs[i].velX;
