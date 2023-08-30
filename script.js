@@ -38,11 +38,12 @@ function createball(event){
     if(m === 9){
         createBalls(balls);
         createBs(bs);
+        ballArea.textContent = "TOO MANY BALLS"
         m= -1;
         return;
     }
     m++;
-    //hasShot = false;
+    hasShot = false;
         bs[m].x = event.clientX;
         bs[m].y = event.clientY;
         bs[m].velX = 0;
@@ -57,13 +58,13 @@ function shootball(event){
     if(m === -1){
         return;
     }
-    //hasShot = true;
+    hasShot = true;
     bs[m].velX = ((bs[m].x - event.clientX)/50);
     bs[m].velY = ((bs[m].y - event.clientY)/50); 
 }
 
 let interval = setInterval(function(){
-    for(let i = 0; i<m; i++){
+    for(let i = 0; i<=m; i++){
         if(hasShot){
             bs[i].velY += .05;
         }
@@ -73,6 +74,9 @@ let interval = setInterval(function(){
         if(bs[i].y - bs[i].h/2 <= window.innerHeight - ballArea.offsetHeight
         || bs[i].y + bs[i].h/2 >= window.innerHeight){
             bs[i].velY *= -1;
+            if(bs[i].y - bs[i].h/2<= window.innerHeight - ballArea.offsetHeight){
+                bs[i].y = window.innerHeight - ballArea.offsetHeight + bs[i].h/2;
+            }
         }
         bs[i].x = bs[i].x + bs[i].velX;
         bs[i].y = bs[i].y + bs[i].velY;
