@@ -1,47 +1,69 @@
-let counter = -1;
+let m = -1; //counter for which ball
 let hasShot = false;
+let balls;
+let bs;
 
 let ballArea = document.querySelector(".ball-area");
 ballArea.addEventListener("mousedown", createball);
 ballArea.addEventListener("mouseup", shootball)
+balls = createBalls(balls);
+bs = createBs(balls);
 
-let bs = []
-for(let i = 0; i<10; i++){
-    bs[i] = {x:0, y:0, w:40, h:40, velX: 0, velY: 0};
+function createBs(bs){
+    bs = [];
+    for(let i = 0; i<10; i++){
+        bs[i] = {x:0, y:0, w:40, h:40, velX: 0, velY: 0};
+    }
+    return bs;
 }
 
+function createBalls(balls){
+    balls = [];
+    while(ballArea.firstChild){
+        ballArea.removeChild(ballArea.firstChild)
+    }
+    for(let i = 0; i<10; i++){
+        const ball = document.createElement("div")
+        ball.className = "ball";
+        balls[i] = ball;
+        balls[i].style.left = "0px";
+        balls[i].style.top = "0px";
 
-const balls = [];
-for(let i = 0; i<10; i++){
-    const ball = document.createElement("div")
-    ball.className = "ball";
-    balls[i] = ball;
-    ballArea.appendChild(balls[i]);
+        ballArea.appendChild(balls[i]);
+    }
+    return balls;
 }
-
-
 
 function createball(event){
-    counter++;
-    hasShot = false;
-    bs[counter].x = event.clientX;
-    bs[counter].y = event.clientY;
-    bs[counter].velX = 0;
-    bs[counter].velY = 0;
-    balls[counter].style.width = `${bs[counter].w}px`;
-    balls[counter].style.height =`${bs[counter].h}px`;
-    balls[counter].style.left = `${bs[counter].x-(bs[counter].w/2)}px`;
-    balls[counter].style.top = `${bs[counter].y-(bs[counter].h/2)}px`;
+    if(m === 9){
+        createBalls(balls);
+        createBs(bs);
+        m= -1;
+        return;
+    }
+    m++;
+    //hasShot = false;
+        bs[m].x = event.clientX;
+        bs[m].y = event.clientY;
+        bs[m].velX = 0;
+        bs[m].velY = 0;
+        balls[m].style.width = `${bs[m].w}px`;
+        balls[m].style.height =`${bs[m].h}px`;
+        balls[m].style.left = `${bs[m].x-(bs[m].w/2)}px`;
+        balls[m].style.top = `${bs[m].y-(bs[m].h/2)}px`;
 }
 
 function shootball(event){
-    hasShot = true;
-    bs[counter].velX = ((bs[counter].x - event.clientX)/50);
-    bs[counter].velY = ((bs[counter].y - event.clientY)/50); 
+    if(m === -1){
+        return;
+    }
+    //hasShot = true;
+    bs[m].velX = ((bs[m].x - event.clientX)/50);
+    bs[m].velY = ((bs[m].y - event.clientY)/50); 
 }
 
 let interval = setInterval(function(){
-    for(let i = 0; i<counter; i++){
+    for(let i = 0; i<m; i++){
         if(hasShot){
             bs[i].velY += .05;
         }
